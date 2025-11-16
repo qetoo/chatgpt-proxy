@@ -22,7 +22,7 @@ app.get('/healthz', (req, res) => {
 // Chat endpoint
 app.post('/chat', async (req, res) => {
   try {
-    const { model, messages } = req.body;
+    const { messages } = req.body;
 
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: "Invalid request: messages must be an array" });
@@ -30,7 +30,7 @@ app.post('/chat', async (req, res) => {
 
     console.log("[DEBUG] Received request:", messages);
 
-    // Call OpenAI API
+    // Call OpenAI API using gpt-3.5-turbo (free tier)
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -38,7 +38,7 @@ app.post('/chat', async (req, res) => {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: model || "gpt-4",
+        model: "gpt-3.5-turbo",
         messages
       })
     });
